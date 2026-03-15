@@ -1,0 +1,75 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:task_manager_with_getx/data/models/task_list_by_status_model.dart';
+import 'package:task_manager_with_getx/ui/controller/new_task_controller.dart';
+import 'package:task_manager_with_getx/ui/widgets/centered_progress_indicator.dart';
+import 'package:task_manager_with_getx/ui/widgets/screeen_background.dart';
+
+import '../utils/task_status/task_status.dart';
+import '../widgets/snack_bar_message.dart';
+import '../widgets/task_item.dart';
+import '../widgets/tm_app_bar.dart';
+
+class CanceledTaskScreen extends StatefulWidget {
+  const CanceledTaskScreen({super.key});
+
+  @override
+  State<CanceledTaskScreen> createState() => _CanceledTaskScreenState();
+}
+
+class _CanceledTaskScreenState extends State<CanceledTaskScreen> {
+  TaskController canceledTaskController =Get.find<TaskController>();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    taskListByStatus();
+  }
+  @override
+  Widget build(BuildContext context) {
+
+    return Scaffold(
+      appBar: TmAppBar(),
+      body: ScreenBackgroundWidgets(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: GetBuilder<TaskController>(
+              builder: (controller) {
+                return Visibility(
+                  visible: controller.taskListByStatusProgress==false,
+                    replacement: CenteredProgressIndicator(),
+                    child: _newTaskList());
+              }
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+  Future<void>taskListByStatus()async{
+    bool isSuccess =await canceledTaskController.getTaskListByStatus(status: TaskStatus.canceledTask);
+    if(isSuccess){
+      snackBarMessage(context, message: 'Succeess');
+    }else{
+      snackBarMessage(context, message: canceledTaskController.errorMsg!);
+    }
+  }
+
+  Widget _newTaskList() {
+    return GetBuilder<TaskController>(
+      builder: (controller) {
+        return ListView.builder(
+          primary: false,
+          shrinkWrap: true,
+          itemCount: controller.taskListByStatusModel?.taskListbyStatus?.length??0,
+          itemBuilder: (context, index) {
+            TaskModel model = controller.taskListByStatusModel!.taskListbyStatus![index];
+            return TaskItemWidget(model: model,);
+          },
+        );
+      }
+    );
+  }
+}
+
