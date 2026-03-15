@@ -93,9 +93,9 @@ Task Manager API used for:
 |-----------------|-----------------|---------------|
 | ![Email](screenshots/verifyemail.png) | ![OTP](screenshots/verifypin.png) | ![Reset](screenshots/resetpassword.png) |
 
-| Update Status | Delete Task |
-|--------------|-------------|
-| ![Status](screenshots/statusupdate.png) | ![Delete](screenshots/deletetask.png) |
+| Update Status | Delete Task                            |
+|--------------|----------------------------------------|
+| ![Status](screenshots/statusupdate.png) | ![Delete](screenshots/delete_task.png) |
 
 ---
 
